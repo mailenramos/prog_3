@@ -13,7 +13,6 @@ public class Backtracking {
 
     public Camino back(Casillero origen) {
         Camino camino = new Camino();
-
         camino.agregarAlCamino(origen);
         camino.marcarVisitado(origen);
         camino.incrementar(origen.getValor()); // Sumar el valor del casillero de origen al camino
@@ -35,7 +34,7 @@ public class Backtracking {
                 if (!caminoActual.estaVisitado(vecino)) {
                     // Aplicar / Hacer cambios / Agregar solucion
                     caminoActual.agregarAlCamino(vecino);
-                    caminoActual.marcarVisitado(vecino);
+                    caminoActual.marcarVisitado(vecino);    
                     caminoActual.incrementar(vecino.getValor());
 
                     // Poda: si el valor del camino actual es menor o igual que el mejor camino, seguir explorando
