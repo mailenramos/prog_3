@@ -45,14 +45,14 @@ public class Recursividad {
         else{
             return buscar(arr, buscado, medio+1, fin);
         }
-        
     }
+
     public String convertirBinario(int numero) {
-    if (numero == 0) {
-        return "";
+        if (numero == 0) {
+            return "";
+        }
+        return convertirBinario(numero / 2) + (numero % 2);
     }
-    return convertirBinario(numero / 2) + (numero % 2);
-}
     public int fibonacci(int n){
         if(n == 0) return 0;
         if(n == 1) return 1;
@@ -70,22 +70,22 @@ public class Recursividad {
 
     public boolean existeIndiceIgual(int[] A, int ini, int fin){
 
-    if(ini > fin){
-        return false;
-    }
+        if(ini > fin){
+            return false;
+        }
 
-    int medio = (ini + fin) / 2;
+        int medio = (ini + fin) / 2;
 
-    if(A[medio] == medio){
-        return true;
-    }
+        if(A[medio] == medio){
+            return true;
+        }
 
-    if(A[medio] > medio){
-        return existeIndiceIgual(A, ini, medio - 1);
-    } else {
-        return existeIndiceIgual(A, medio + 1, fin);
+        if(A[medio] > medio){
+            return existeIndiceIgual(A, ini, medio - 1);
+        } else {
+            return existeIndiceIgual(A, medio + 1, fin);
+        }
     }
-}
 
     public static void main(String[] args) {
         Recursividad r = new Recursividad();

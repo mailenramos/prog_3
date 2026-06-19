@@ -1,6 +1,7 @@
 public class Node<T>{
     private T info;
     private Node <T> next;
+    
     public Node(){
         this.info=null;
         this.next=null;

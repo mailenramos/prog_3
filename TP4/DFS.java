@@ -94,6 +94,7 @@ public class DFS {
 
 	private boolean tieneCiclos(Integer vertice) {
 		colores.put(vertice, "AMARILLO");
+
 		for (Iterator<Integer> it = grafo.obtenerAdyacentes(vertice); it.hasNext();) {
 			Integer adyacente = (Integer) it.next();
 			if (colores.get(adyacente).equals("BLANCO")) {
@@ -105,6 +106,7 @@ public class DFS {
 				return true;
 			}
 		}
+
 		colores.put(vertice, "BLANCO");
 		return false;
 	}
@@ -174,22 +176,22 @@ public class DFS {
 		caminoAux.remove(caminoAux.size() - 1);
 	}
 
-	/**
+	/* 
 	 * Variedad del ejercicio para 4 para que devuelva todos los caminos.
 	 * 
 	 * @param i v�rtice de inicio
 	 * @param j v�rtice final
 	 * @return Lista con todos los caminos posibles para llegar de i a j
 	 */
-	public List<List<Integer>> getCaminosSimple(Integer i, Integer j) {
+	public List<List<Integer>> getCaminosSimpleMasLargo(Integer i, Integer j) {
 		this.inicializarEstructura();
 		List<List<Integer>> caminosFinal = new ArrayList<List<Integer>>();
 		List<Integer> caminoAux = new ArrayList<Integer>();
-		getCaminosSimple(i, j, caminosFinal, caminoAux);
+		getCaminosSimpleMasLargo(i, j, caminosFinal, caminoAux);
 		return caminosFinal;
 	}
 
-	private void getCaminosSimple(Integer i, Integer j, List<List<Integer>> caminosFinal, List<Integer> caminoAux) {
+	private void getCaminosSimpleMasLargo(Integer i, Integer j, List<List<Integer>> caminosFinal, List<Integer> caminoAux) {
 		colores.put(i, "AMARILLO");
 		caminoAux.add(i);
 		if (i == j) {
@@ -198,7 +200,7 @@ public class DFS {
 			for (Iterator<Integer> it = grafo.obtenerAdyacentes(i); it.hasNext();) {
 				Integer adyacente = (Integer) it.next();
 				if (colores.get(adyacente).equals("BLANCO")) {
-					getCaminosSimple(adyacente, j, caminosFinal, caminoAux);
+					getCaminosSimpleMasLargo(adyacente, j, caminosFinal, caminoAux);
 				}
 			}
 		}
@@ -211,27 +213,33 @@ public class DFS {
 	 * grafo, devuelva una lista con todos los v�rtices a partir de los cuales
 	 * exista un camino en G que termine en v.
 	 */
-	public List<List<Integer>> getCaminosTerminanEnV(int v) {
-		this.inicializarEstructura();
-		List<List<Integer>> caminosPorVertices = new ArrayList<List<Integer>>();
-		List<List<Integer>> caminosFinales = new ArrayList<List<Integer>>();
-		for (Iterator<Integer> it = grafo.obtenerVertices(); it.hasNext();) {
-			Integer vertice = it.next();
-			caminosPorVertices.clear();
-			caminosPorVertices = getCaminosSimple(vertice, v);
-			for (Iterator<List<Integer>> iterator = caminosPorVertices.iterator(); iterator.hasNext();) {
-				List<Integer> list = (List<Integer>) iterator.next();
-				caminosFinales.add(list);
-			}
 
-		}
-		return caminosFinales;
-	}
+	public List<Integer> getVerticesQueTerminanEnV(int v) {
+    this.inicializarEstructura();
+    
+    List<Integer> verticesGanadores = new ArrayList<Integer>();
+    
+    for (Iterator<Integer> it = grafo.obtenerVertices(); it.hasNext();) {
+        Integer verticeActual = it.next();
+        
+        if (!verticeActual.equals(v)) {
+            // CORRECCIÓN: Ahora cambiamos el tipo a List<List<Integer>>
+            List<List<Integer>> todosLosCaminos = getCaminosSimpleMasLargo(verticeActual, v);
+            
+            // Si la lista de caminos no está vacía, es porque el vértice puede llegar a v
+            if (!todosLosCaminos.isEmpty()) {
+                verticesGanadores.add(verticeActual);
+            }
+        }
+    }
+    
+    return verticesGanadores;
+}
 
 	/**
 	 * Ejercicio 6. Supongamos una conexion entre computadoras (1, ... ,n) que se
-	 * encuentra modelada mediante un grafo. Se requiere, si existe, dar una
-	 * conexion entre dos computadoras a y b existentes sabiendo que la computadora
+	 * encuentra modelada mediante un grafo.
+	 *  Se requiere, si existe, dar una conexion entre dos computadoras a y b existentes sabiendo que la computadora
 	 * i esta fuera de servicio.
 	 */
 	public boolean existeConeccion(int a, int b, int i) {

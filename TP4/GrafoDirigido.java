@@ -22,29 +22,43 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
     public void borrarVertice(int verticeId) {
-        if (!vertices.containsKey(verticeId)) {
-            System.out.println("El vértice " + verticeId + " no existe.");
-        } else {
-           
-            for (Integer vecino : vertices.keySet()) {
-                LinkedList<Arco<T>> arcos = vertices.get(vecino);
-                arcos.removeIf(arco -> arco.getVerticeDestino() == verticeId);
-            }
 
-            // Eliminar el vértice
-            vertices.remove(verticeId);
+    if (!vertices.containsKey(verticeId)) {
+        System.out.println("El vértice no existe");
+        return;
+    }
+    for (Integer vecino : vertices.keySet()) {
+
+        Iterator<Arco<T>> it = vertices.get(vecino).iterator();
+
+        while (it.hasNext()) {
+            Arco<T> arco = it.next();
+
+            if (arco.getVerticeDestino() == verticeId) {
+                it.remove();
+            }
         }
     }
+    vertices.remove(verticeId);
+}
  @Override
     public void borrarArco(int verticeId1, int verticeId2) {
-        if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
-            System.out.println("El grafo no contiene al menos uno de los vértices.");
-        } else {
-            // Eliminar el arco de la lista de adyacencia de verticeId1
-            LinkedList<Arco<T>> arcos = vertices.get(verticeId1);
-            arcos.removeIf(arco -> arco.getVerticeDestino() == verticeId2);
+    if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
+        System.out.println("El grafo no contiene al menos uno de los vértices.");
+    } else {
+        
+        LinkedList<Arco<T>> arcos = vertices.get(verticeId1);
+
+        Iterator<Arco<T>> iterador = arcos.iterator();
+        
+        while (iterador.hasNext()) {
+            Arco<T> arco = iterador.next();
+            if (arco.getVerticeDestino() == verticeId2) {
+                iterador.remove(); 
+            }
         }
     }
+}
 	@Override
     public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
         if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
