@@ -4,27 +4,38 @@
  * (Inmutable: una vez creado el arco no es posible cambiarle los valores).
  */
 public class Arco<T> {
-
-	private int verticeOrigen;
-	private int verticeDestino;
-	private T etiqueta;
-
-	public Arco(int verticeOrigen, int verticeDestino, T etiqueta) {
-		this.verticeOrigen = verticeOrigen;
-		this.verticeDestino = verticeDestino;
-		this.etiqueta = etiqueta;
-	}
 	
-	public int getVerticeOrigen() {
-		return verticeOrigen;
-	}
+    private int verticeOrigen;
+    private int verticeDestino;
+    private T etiqueta;
+
+    public Arco(int verticeOrigen, int verticeDestino, T etiqueta) {
+        this.verticeOrigen = verticeOrigen;
+        this.verticeDestino = verticeDestino;
+        this.etiqueta = etiqueta;
+    }
+
+    public int getVerticeOrigen() {
+        return verticeOrigen;
+    }
+
+    public int getVerticeDestino() {
+        return verticeDestino;
+    }
+
+    public T getEtiqueta() {
+        return etiqueta;
+    }
 	
-	public int getVerticeDestino() {
-		return verticeDestino;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Arco<T> arco = (Arco<T>) obj;
+		return arco.getVerticeOrigen() == this.getVerticeOrigen() && arco.getVerticeDestino() == this.getVerticeDestino();
 	}
-
-	public T getEtiqueta() {
-		return etiqueta;
-	}
-
 }

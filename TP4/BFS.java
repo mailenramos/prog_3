@@ -1,9 +1,16 @@
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 public class BFS {
 
 	private Grafo<?> grafo;
@@ -13,10 +20,13 @@ public class BFS {
 		this.grafo = g;
 		this.visitados = new HashMap<Integer, Boolean>();
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Inicio todos los vertices como no visitados.
 	 */
+=======
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 	private void iniciarEstructura() {
 		for (Iterator<Integer> iterator = grafo.obtenerVertices(); iterator.hasNext();) {
 			Integer vertice = (Integer) iterator.next();
@@ -35,6 +45,7 @@ public class BFS {
 	 */
 	public List<Integer> getRecorrido() {
 		this.iniciarEstructura();
+<<<<<<< HEAD
 		List<Integer> recorrido = new ArrayList<Integer>();
 		for (Iterator<Integer> vertices = this.grafo.obtenerVertices(); vertices.hasNext();) {
 			Integer vertice = (Integer) vertices.next();
@@ -43,6 +54,16 @@ public class BFS {
 			}
 		}
 		return recorrido;
+=======
+		List<Integer> resultado = new ArrayList<Integer>();
+		for (Iterator<Integer> vertices = this.grafo.obtenerVertices(); vertices.hasNext();) {
+			Integer vertice = (Integer) vertices.next();
+			if (!visitados.get(vertice)) {
+				resultado.addAll(getRecorrido(vertice));
+			}
+		}
+		return resultado;
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 	}
 
 	/**

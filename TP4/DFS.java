@@ -1,7 +1,14 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+
+/*
+DFS (Depth-First Search)
+Recorrido en profundidad
+*/
 
 public class DFS {
 
@@ -10,7 +17,11 @@ public class DFS {
 	private List<Arco<?>> arcos_recorridos;
 	private List<List<Integer>> caminos;
 
-
+	/**
+	 * Constructor de la clase
+	 * 
+	 * @param g Nuevo grafo para el recorrido.
+	 */
 	public DFS(Grafo<?> g) {
 		this.grafo = g;
 		this.colores = new HashMap<Integer, String>();
@@ -18,11 +29,9 @@ public class DFS {
 	}
 
 	/**
-	 * Inicializa el hash con los vertices todos en blanco. 
-     * 
-	 * color. BLANCO = Estado inicial. 
-     *        AMARILLO = Estado intermedio. 
-     *        ROJO = Estado final.
+	 * Inicializa el hash con los vertices todos en blanco. Key = vertice, Value un
+	 * color. BLANCO = Estado inicial. AMARILLO = Estado intermedio. ROJO = Estado
+	 * final.
 	 */
 	private void inicializarEstructura() {
 		for (Iterator<Integer> iterator = grafo.obtenerVertices(); iterator.hasNext();) {
@@ -31,7 +40,10 @@ public class DFS {
 		}
 	}
 
-	/*
+	/**
+	 * Ejercicio 2. Implemente los recorridos Depth-First-Search y
+	 * Breadth-First-Search.
+	 * 
 	 * Inicializa la estrucutra. Complejidad O(|V|+|A|). Va a pasar una vez por cada
 	 * vertice y una vez por cada arco. Recorre todos los vertices que no hayan sido
 	 * ni visitados ni tengo un estado final. O sea, que sea BLANCO. Entonces si
@@ -62,17 +74,19 @@ public class DFS {
 	 * @return lista de camino
 	 */
 	private List<Integer> getRecorrido(Integer vertice) {
-		List<Integer> recorrido = new ArrayList<Integer>();
+		List<Integer> resultado = new ArrayList<Integer>();
 		colores.put(vertice, "AMARILLO");
-		recorrido.add(vertice);
+		resultado.add(vertice);
 		for (Iterator<Integer> it = grafo.obtenerAdyacentes(vertice); it.hasNext();) {
 			Integer adyacente = (Integer) it.next();
 			if (colores.get(adyacente).equals("BLANCO")) {
-				recorrido.addAll(getRecorrido(adyacente));
+				resultado.addAll(getRecorrido(adyacente));
+			}else if(colores.get(adyacente).equals("AMARILLO")){
+				System.out.println("Hay ciclo");
 			}
 		}
 		colores.put(vertice, "NEGRO");
-		return recorrido;
+		return resultado;
 	}
 
 	/**
@@ -106,8 +120,12 @@ public class DFS {
 				return true;
 			}
 		}
+<<<<<<< HEAD
 
 		colores.put(vertice, "BLANCO");
+=======
+		colores.put(vertice, "NEGRO");
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 		return false;
 	}
 
@@ -236,6 +254,7 @@ public class DFS {
     return verticesGanadores;
 }
 
+<<<<<<< HEAD
 	/**
 	 * Ejercicio 6. Supongamos una conexion entre computadoras (1, ... ,n) que se
 	 * encuentra modelada mediante un grafo.
@@ -247,144 +266,50 @@ public class DFS {
 		colores.put(i, "NEGRO");
 		boolean existe = _existeConeccion(a, b);
 		return existe;
+=======
+	public List<List<Integer>> caminosAlternativos(int buenosAires,int tandil,int lasFlores,int rauch) {
+    this.inicializarEstructura();
+    List<List<Integer>> caminos = new ArrayList<>();
+    List<Integer> caminoActual = new ArrayList<>();
+
+    caminosAlternativos(buenosAires,tandil,lasFlores,rauch,caminoActual,caminos);
+    return caminos;
+
+>>>>>>> 67a41e00f99d14987d3cbf5a85b6b79400af2b40
 	}
+	private void caminosAlternativos(int actual, int destino, int lasFlores,int rauch,List<Integer> caminoActual,List<List<Integer>> caminos) {
 
-	private boolean _existeConeccion(int a, int b) {
-		colores.put(a, "AMARILLO");
-		if (a == b) {
-			return true;
-		} else {
-			for (Iterator<Integer> it = grafo.obtenerAdyacentes(a); it.hasNext();) {
-				Integer ady = (Integer) it.next();
-				if (colores.get(ady).equals("BLANCO")) {
-					_existeConeccion(ady, b);
-				}
-			}
-		}
-		return false;
-	}
+    colores.put(actual, "AMARILLO");
+    caminoActual.add(actual);
 
-	/**
-	 * Caminos : dado un origen, un destino y un limite retorna todos los caminos
-	 * que, partiendo del vertice origen, llega al vertice de destino sin pasar por
-	 * mas de limite de arcos. Aclaracion importante: en un camino no se puede pasar 2
-	 * veces por el mismo arco.
-	 */
-	public List<List<Integer>> tpe_caminos(Integer origen, Integer destino, Integer lim) {
-		List<List<Integer>> caminos = new ArrayList<List<Integer>>();
-		List<Integer> camino = new ArrayList<Integer>();
-		arcos_recorridos = new ArrayList<Arco<?>>();
-		_tpe_caminos(origen, destino, lim, camino, caminos);
-		return caminos;
-	}
+    if (actual == destino) {
 
-	private void _tpe_caminos(Integer verticeActual, Integer destino, Integer lim_arcos, List<Integer> camino, List<List<Integer>> caminos) {
-		camino.add(verticeActual);
+        caminos.add(new ArrayList<>(caminoActual));
 
-		if (verticeActual.equals(destino) && arcos_recorridos.size() > 0 && arcos_recorridos.size() <= lim_arcos) {
-			caminos.add(new ArrayList<Integer>(camino));
-		} else {
-			for (Iterator<Integer> it = grafo.obtenerAdyacentes(verticeActual); it.hasNext();) {
-				Integer ady = (Integer) it.next();
-				Arco<?> arco = new Arco<Integer>(verticeActual, ady, null);
-				if (!arcos_recorridos.contains(arco)) {
-					arcos_recorridos.add(arco);
-					if (arcos_recorridos.size() <= lim_arcos) {
-						_tpe_caminos(ady, destino, lim_arcos, camino, caminos);
-					}
-					arcos_recorridos.remove(arco);
-				}
-			}
-		}
-		camino.remove(verticeActual);
-	}
+    } else {
 
-	/**
-	 * Ejercicio 8 Dados un grafo G con sus vértices rotulados con colores y dos
-	 * vértices v1 y v2, escriba un algoritmo que encuentre un camino desde el
-	 * vértice v1 al vértice v2 tal que no pase por vértices rotulados con el color
-	 * rojo.
-	 */
-	public List<Integer> getCaminoQueNoPasePorUnColor(Grafo<String> gc, int v1, int v2, String color) {
-		List<Integer> camino = new ArrayList<Integer>();
-		this.inicializarEstructura();
-		if (_getCaminoQueNoPasePorUnColor(gc, v1, v2, color, camino))
-			return camino;
-		return new ArrayList<Integer>();
-	}
+        Iterator<Integer> it = grafo.obtenerAdyacentes(actual);
 
-	private boolean _getCaminoQueNoPasePorUnColor(Grafo<String> gc, int v1, int v2, String color,
-			List<Integer> camino) {
+        while (it.hasNext()) {
 
-		colores.put(v1, "AMARILLO");
-		camino.add(v1);
-		if (v1 == v2) {
-			return true;
-		} else {
-			for (Iterator<Arco<String>> it = gc.obtenerArcos(v1); it.hasNext();) {
-				Arco<String> arcoAdy = (Arco<String>) it.next();
-				Integer ady = arcoAdy.getVerticeDestino();
-				String etiqueta = arcoAdy.getEtiqueta();
-				if (!colores.get(ady).equals("AMARILLO") && !etiqueta.equals(color)) {
-					boolean encontro = _getCaminoQueNoPasePorUnColor(gc, ady, v2, color, camino);
-					if (encontro) {
-						return true;
-					}
-				}
+            Integer ady = it.next();
 
-			}
-		}
-		return false;
-	}
+            boolean tramoCortado =
+                    (actual == lasFlores && ady == rauch)
+                    ||
+                    (actual == rauch && ady == lasFlores);
 
-	/**
-	 * Dado un grafo dirigido, el cual contiene un solo ciclo, determine si, en caso
-	 * de que tenga un ciclo, la suma de los arcos del ciclo resulta ser igual a un
-	 * valor X dados como parametro.
-	 */
-	public boolean tieneCicloConSumaIgualAN(int N) {
-		inicializarEstructura();
-		List<Integer> camino = new ArrayList<Integer>();
-		for (Iterator<Integer> it = grafo.obtenerVertices(); it.hasNext();) {
-			Integer v = it.next();
-			if (colores.get(v).equals("BLANCO")) {
-				if (tieneCicloConSumaIgualAN(v, 0, N, camino)) {
-					System.out.println();
-					System.out.print(" |" + camino.toString() + "| ");
-					System.out.println();
-					return true;
-				}
-			}
-		}
+            if (!tramoCortado &&
+                colores.get(ady).equals("BLANCO")) {
 
-		return false;
-	}
+                caminosAlternativos(ady,destino,lasFlores,rauch,caminoActual,caminos);
+            }
+        }
+    }
 
-	private boolean tieneCicloConSumaIgualAN(Integer v, int cont, int n, List<Integer> camino) {
-		colores.put(v, "AMARILLO");
-		camino.add(v);
-		for (Iterator<?> it = grafo.obtenerArcos(v); it.hasNext();) {
-			Arco<Integer> arco = (Arco<Integer>) it.next();
-			Integer vAdy = arco.getVerticeDestino();
-			cont += arco.getEtiqueta();
-			if (colores.get(vAdy).equals("BLANCO")) {
-				boolean resultado = tieneCicloConSumaIgualAN(vAdy, cont, n, camino);
-				if (resultado) {
-					return true;
-				}
-			} else {
-				if (colores.get(vAdy).equals("AMARILLO")) {
-					if (cont == n) {
-						camino.add(vAdy);
-						return true;
-					}
-				}
-			}
-			cont -= arco.getEtiqueta();
-		}
-		colores.put(v, "BLANCO");
-		camino.remove(camino.size() - 1);
-		return false;
-	}
-
+    colores.put(actual, "BLANCO");
+    caminoActual.remove(caminoActual.size() - 1);
+}
+	
+	 
 }
