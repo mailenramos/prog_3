@@ -217,7 +217,8 @@ public class Tree {
 		List<Integer> listaElementos = new ArrayList<Integer>();
 		getElemsEnNivel(raiz, 0, nivel, listaElementos);
 		return listaElementos;
-	}'¿
+	}
+
 	private void getElemsEnNivel(TreeNode nodo, int nivelActual, int nivel, List<Integer> listaElementos) {
         if (nodo == null) {
 			return;
@@ -278,5 +279,42 @@ public class Tree {
 
         hojasMayoresA(nodo.getIzq(), k, lista);
         hojasMayoresA(nodo.getDer(), k, lista);
+    }
+    /*Dado un árbol binario de búsqueda que almacena números enteros, implementar un método eficiente 
+    en la clase AB que devuelva una lista ordenada de menor a mayor con todos los valores del árbol 
+    que se encuentren incluídos en el rango [L, R], ambos valores inclusive, y con L<=R. */
+
+// Método principal solicitado
+    public ArrayList<Integer> valoresEnRango(int L, int R) {
+        ArrayList<Integer> resultado = new ArrayList<>();
+        // Llamamos al método auxiliar recursivo pasando la raíz
+        buscarEnRango(this.raiz, L, R, resultado);
+        return resultado;
+    }
+    // Método auxiliar recursivo para realizar el recorrido acotado
+    private void buscarEnRango(TreeNode nodo, int L, int R, ArrayList<Integer> lista) {
+        if (nodo == null) {
+            return;
+        }
+        // 1. ¿Debemos ir a la izquierda? 
+        // Solo si el valor actual es mayor que L, ya que si es menor o igual, 
+        // todos sus descendientes izquierdos serán aún menores que L y quedarán fuera del rango.
+        if (nodo.getValor() > L) {
+            buscarEnRango(nodo.getIzq(), L, R, lista);
+        }
+
+        // 2. ¿El nodo actual está dentro del rango?
+        // Si está entre L y R inclusive, se añade a la lista. 
+        // Al procesarlo aquí (en medio), garantizamos que la lista quede ordenada de menor a mayor (Inorder).
+        if (nodo.getValor() >= L && nodo.getValor() <= R) {
+            lista.add(nodo.getValor());
+        }
+
+        // 3. ¿Debemos ir a la derecha?
+        // Solo si el valor actual es menor que R, ya que si es mayor o igual, 
+        // todos sus descendientes derechos serán aún mayores que R y quedarán fuera del rango.
+        if (nodo.getValor() < R) {
+            buscarEnRango(nodo.getDer(), L, R, lista);
+        }
     }
 }   
